@@ -5,6 +5,7 @@ flask-cors
 requests==2.26.0
 Werkzeug==2.0.3
 yarl==1.7
+pillow
 
 
 

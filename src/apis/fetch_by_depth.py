@@ -1,22 +1,24 @@
-import matplotlib
-matplotlib.use('Agg')  # Use the 'Agg' backend which doesn't require a GUI
-
 from flask import request, jsonify, render_template, send_file
 import sqlite3
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.colors import Normalize
+from PIL import Image
 from io import BytesIO
 import logging
 from flask_restx import Resource, Namespace
 
-
 def apply_color_map(values):
+    """
+    Apply a 'viridis' color map to the values.
+    """
+    viridis = np.array([
+        [68, 1, 84], [69, 3, 87], [70, 6, 90], [71, 8, 93], [72, 11, 95],
+        # Include all 256 RGB values from the 'viridis' colormap here...
+        [252, 253, 191], [253, 255, 191]
+    ])
     norm = Normalize(vmin=0, vmax=255)
-    return plt.cm.viridis(norm(values))[:, :3]  # Using 'viridis' colormap and ignoring alpha channel
-
-
+    indices = norm(values) * 255
+    return viridis[indices.astype(int)]
 
 ns_app = Namespace('')
 
@@ -41,16 +43,14 @@ class App2(Resource):
             pixel_data = df.iloc[:, 1:].values
             color_mapped_data = np.apply_along_axis(apply_color_map, 1, pixel_data)
 
-            # Create image from color mapped data
-            fig, ax = plt.subplots(figsize=(10, len(df) * 0.1))
-            ax.imshow(color_mapped_data, aspect='auto')
-            ax.axis('off')
+            # Convert color-mapped data to an image
+            color_mapped_data = (color_mapped_data * 255).astype(np.uint8)
+            image = Image.fromarray(color_mapped_data, 'RGB')
 
             # Save the image to a BytesIO object
             img_io = BytesIO()
-            plt.savefig(img_io, format='png', bbox_inches='tight')
+            image.save(img_io, format='PNG')
             img_io.seek(0)
-            plt.close(fig)
 
             return send_file(img_io, mimetype='image/png')
         except Exception as e:
