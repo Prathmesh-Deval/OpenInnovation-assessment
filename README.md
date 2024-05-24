@@ -17,4 +17,28 @@ The solution should be based on Python.<br>
 deployment of the solution in a cloud service : serverless deployment
 
 
+
+### Steps to Run
+
+1. **Install Dependencies**:
+   Ensure you have all required dependencies installed. You can install them using `pip`:
+   ```sh
+   pip install -r requirements.txt
+   
+2. **Resize Image**:
+   To resize the image provide path to your csv file containing image pixel values along with depth and run image_preprocess.py file.
+   ```sh
+   python3 image_preprocess.py
+   
+3. **Store values in DB**:
+    We are using sqlite3 database for demonstration purposes. run database.py file inside service folder to store your resized pixel values in DB.
+   ```sh
+   python3 database.py
+   
+2. **Run the Flask Server**:
+   Start the Flask server by running the main.py file:
+   ```sh
+   python3 main.py
+
+
 Thanks!
