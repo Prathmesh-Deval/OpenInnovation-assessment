@@ -5,9 +5,7 @@ def create_flask_app() -> Flask:
     app = Flask(__name__)
     app.config['CORS_HEADERS'] = 'application/json'
     app.secret_key = b'secret key'
-    # app.config.from_file('env_vars.json',json.load,silent=False)
-    # for i in app.config:
-    #     os.environ[i] = str(app.config[i])
+
     return app
 
 

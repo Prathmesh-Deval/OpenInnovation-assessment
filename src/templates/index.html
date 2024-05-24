@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Mapped Image Frames Viewer</title>
+    <title>OpenInnovation AI </title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,11 +23,15 @@
             margin-left: auto;
             margin-right: auto;
         }
+        #message {
+            margin-top: 20px;
+            color: red;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Color Mapped Image Frames Viewer</h1>
+        <h1>OpenInnovation AI CSV Image Analysis</h1>
         <form id="depthForm">
             <label for="depth_min">Depth Min:</label>
             <input type="number" id="depth_min" name="depth_min" required>
@@ -38,6 +42,7 @@
             <button type="submit">Submit</button>
         </form>
         <img id="resultImage" src="" alt="Resulting Image" style="display: none;">
+        <div id="message"></div>
     </div>
 
     <script>
@@ -48,14 +53,26 @@
             const depth_max = document.getElementById('depth_max').value;
 
             const resultImage = document.getElementById('resultImage');
+            const messageDiv = document.getElementById('message');
             resultImage.style.display = 'none';
+            messageDiv.textContent = '';
 
             fetch(`/color_map?depth_min=${depth_min}&depth_max=${depth_max}`)
-                .then(response => response.blob())
-                .then(blob => {
-                    const url = URL.createObjectURL(blob);
-                    resultImage.src = url;
-                    resultImage.style.display = 'block';
+                .then(response => {
+                    if (response.headers.get('Content-Type').includes('application/json')) {
+                        return response.json().then(data => ({ status: response.status, body: data }));
+                    } else {
+                        return response.blob().then(blob => ({ status: response.status, body: blob }));
+                    }
+                })
+                .then(response => {
+                    if (response.status === 200 && response.body instanceof Blob) {
+                        const url = URL.createObjectURL(response.body);
+                        resultImage.src = url;
+                        resultImage.style.display = 'block';
+                    } else if (response.body.message) {
+                        messageDiv.textContent = response.body.message;
+                    }
                 })
                 .catch(error => {
                     console.error('Error fetching image:', error);
