@@ -3,7 +3,6 @@
 Attached is a csv file that contains image data referenced by the column depth. The rest of columns (200) represent image pixel values from 0 to 255 at each depth.
 ###### You can find solution for respective challenges in below files:
 
-
 #### File Descriptions <br>
 
 | File Path                      | Description                                                                                  |
@@ -15,7 +14,6 @@ Attached is a csv file that contains image data referenced by the column depth. 
 <br><br>
 The solution should be based on Python.<br>
 deployment of the solution in a cloud service : serverless deployment
-
 
 
 ### Steps to Run
