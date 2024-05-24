@@ -1,0 +1,16 @@
+boto3==1.21.12
+botocore==1.24.12
+Flask==2.0.3
+Flask-Log-Request-ID==0.10.1
+flask-restx==1.0.3
+flask-cors
+numpy
+matplotlib
+pandas==2.0.0
+requests==2.26.0
+
+
+
+
+
+

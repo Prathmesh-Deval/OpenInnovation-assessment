@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Mapped Image Frames Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        form {
+            margin-bottom: 30px;
+        }
+        #resultImage {
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Color Mapped Image Frames Viewer</h1>
+        <form id="depthForm">
+            <label for="depth_min">Depth Min:</label>
+            <input type="number" id="depth_min" name="depth_min" required>
+            <br><br>
+            <label for="depth_max">Depth Max:</label>
+            <input type="number" id="depth_max" name="depth_max" required>
+            <br><br>
+            <button type="submit">Submit</button>
+        </form>
+        <img id="resultImage" src="" alt="Resulting Image" style="display: none;">
+    </div>
+
+    <script>
+        document.getElementById('depthForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const depth_min = document.getElementById('depth_min').value;
+            const depth_max = document.getElementById('depth_max').value;
+
+            const resultImage = document.getElementById('resultImage');
+            resultImage.style.display = 'none';
+
+            fetch(`/color_map?depth_min=${depth_min}&depth_max=${depth_max}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    resultImage.src = url;
+                    resultImage.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error fetching image:', error);
+                });
+        });
+    </script>
+</body>
+</html>

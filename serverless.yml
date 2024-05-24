@@ -1,0 +1,49 @@
+service: csv-image-analysis-dev
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+
+  region: "ap-south-1"
+  deploymentBucket:
+    name: "prathmesh-products"
+  stage: ${opt:stage, 'dev'}
+  tags:
+    project: 'csv-image-analysis-dev'
+    environment: ${opt:stage, 'dev'}
+    createdBy: 'serverless-codedeploy'
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - s3:*
+      Resource: "*"
+
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!venv/**'
+    - '!.venv/**'
+    - '!infra/**'
+    - '!scripts/**'
+    - '!test/**'
+    - '!tests-integration'
+
+plugins:
+  - serverless-wsgi
+  - serverless-python-requirements
+  - serverless-prune-plugin
+
+
+custom:
+ wsgi:
+   app: src/main.flask_app
+   packRequirements: false
+
+functions:
+  app:
+    handler: wsgi_handler.handler
+    timeout: 30
+    events:
+      - httpApi: '*'
