@@ -1,10 +1,14 @@
+aiohttp==3.8.1
+async-timeout==4.0.1
 Flask==2.0.3
 Flask-Log-Request-ID==0.10.1
 flask-restx==1.0.3
 flask-cors
+Jinja2==3.0.3
 requests==2.26.0
 matplotlib
-
+Werkzeug==2.0.3
+yarl==1.7
 
 
 
