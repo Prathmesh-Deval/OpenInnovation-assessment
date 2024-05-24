@@ -13,7 +13,6 @@ cursor.execute(create_table_query)
 resized_df.to_sql('resized_images', conn, if_exists='replace', index=False)
 
 conn.commit()
-print("*****")
 query = "SELECT * FROM resized_images"
 df_from_db = pd.read_sql_query(query, conn)
 conn.close()

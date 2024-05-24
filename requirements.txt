@@ -1,13 +1,12 @@
-aiohttp==3.8.1
 Flask==2.0.3
 flask-restx==1.0.3
 flask-cors
 matplotlib
 numpy
+opencv-python
 pandas
 requests==2.26.0
 Werkzeug==2.0.3
-yarl==1.7
 
 
 

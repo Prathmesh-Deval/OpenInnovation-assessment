@@ -31,13 +31,13 @@ class App2(Resource):
             depth_min = float(request.args.get('depth_min'))
             depth_max = float(request.args.get('depth_max'))
 
-            conn = sqlite3.connect('/Users/prdeval/Desktop/Projects/openinnovation/src/image_data.db')
+            conn = sqlite3.connect('/Users/prdeval/Desktop/Projects/openinnovation/src/services/image_data.db')
             query = "SELECT * FROM resized_images WHERE depth BETWEEN ? AND ?"
             df = pd.read_sql_query(query, conn, params=(depth_min, depth_max))
             conn.close()
 
             if df.empty:
-                return jsonify({"message": "Depth range not found. Please try a range between 9001 and 9100."})
+                return jsonify({"message": "Depth range not found. Please try a range between 9000.1 and 9546.0"})
 
             pixel_data = df.iloc[:, 1:].values
             color_mapped_data = np.apply_along_axis(apply_color_map, 1, pixel_data)
