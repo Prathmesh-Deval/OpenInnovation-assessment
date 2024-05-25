@@ -21,9 +21,9 @@ phases:
 #      - touch env_vars.json
 #      - IMAGE_ENV_VARS=$(echo "${ENV_VARS}" | jq 'del(.AWS_ACCESS_KEY_ID, .AWS_SECRET_ACCESS_KEY)')
 #      - echo $IMAGE_ENV_VARS > env_vars.json
-#      - cp env_vars.json src/env_vars.json
+#      - cp env_vars.json app/env_vars.json
 #      - cat env_vars.json
-#      - cat src/env_vars.json
+#      - cat app/env_vars.json
 
   build:
     commands:
